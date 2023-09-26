@@ -64,6 +64,16 @@ def fibonacci_n_mod_m(n, m):
     mod = period_list[n % period]
     return mod
 
+def GCD_Euclid(n, m):
+    '''Функция находит НОД двух чисел
+    с помощью алгоритма Евклида'''
+
+    while n != 0 and m != 0:
+        if n >= m:
+            n = n % m
+        else:
+            m = m % n
+    return n if m == 0 else m
 def test():
     #Контейнеры с тестовыми данными
     test_list_0_10 = list(range(11))
@@ -89,9 +99,11 @@ def test():
     print(*[f'F{x} : {fibonacci_n_mod_m(x, 4)}' for x in test_list_0_10], sep='\n')
     print('\n')
 
-
-
-
+    print('Наибольший общий делитель двух чисел:')
+    print('НОД двух чисел:')
+    print(f'НОД 14159572 и 63967072 равен {GCD_Euclid(14159572, 63967072)}')
+    print(f'НОД 18 и 35 равен {GCD_Euclid(18, 35)}')
+    print(f'НОД 1465432155 и 5689846525 равен {GCD_Euclid(1465432155, 5689846525)}')
 
 if __name__ == "__main__":
     test()
