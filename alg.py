@@ -1,3 +1,4 @@
+from typing import List, Tuple
 def fibonacci_with_list(n: int) -> int:
     '''Функция нахождения числа Фибоначчи
     c сохранением всех значеий до n в массив'''
@@ -25,7 +26,7 @@ def fibonacci_while(n: int) -> int:
         i += 1
     return f2
 
-def fibonacci_last_digit(n):
+def fibonacci_last_digit(n: int) -> int:
     '''Функция нахождения последней цифры числа Фибоначчи'''
     f1, f2, i = 0, 1, 0
     if n == 0: return f1
@@ -35,7 +36,7 @@ def fibonacci_last_digit(n):
         i += 1
     return f2
 
-def fibonacci_n_mod_m(n, m):
+def fibonacci_n_mod_m(n: int, m: int) -> int:
     '''
     Функция находит остаток от деления
     n-го числа Фибоначчи на m.
@@ -64,7 +65,7 @@ def fibonacci_n_mod_m(n, m):
     mod = period_list[n % period]
     return mod
 
-def GCD_Euclid(n, m):
+def GCD_Euclid(n: int, m: int) -> int:
     '''Функция находит НОД двух чисел
     с помощью алгоритма Евклида'''
 
@@ -74,9 +75,80 @@ def GCD_Euclid(n, m):
         else:
             m = m % n
     return n if m == 0 else m
+
+def point_cover(m: List[Tuple[int, int]]) -> Tuple[int, list[int]]:
+    '''Функция находит минимальное множество точек, которые
+    есть во всех отрезках (в каждом отрезке должна быть минимум одна точка)
+    Пример:
+    Входные данные:
+    На вход даются отрезки:
+    4 7
+    1 3
+    2 5
+    5 6
+    Выходные данные:
+    На выход дается минимальное количество точек, которые
+    есть во всех отрезках
+    (2, [3, 6])
+    '''
+    sorted_m = sorted(m, key=lambda x: x[1])
+    res = [sorted_m[0][1]]
+    for i in sorted_m:
+        if i[0] <= res[-1] <= i[1]:
+            pass
+        else:
+            res.append(i[1])
+    return len(res), res
+
+def continuous_knapsack_problem(v: int, m: List[Tuple[int, int]]) -> float:
+    '''Задача на непрерывный рюкзак
+    (от каждого предмета можно отделить любую часть, стоимость и объём при этом пропорционально уменьшатся)
+    Пример:
+    Входные данные:
+    На вход даются объем рюкзака и список кортежей цена/объем предмета:
+    50
+    60 20
+    100 50
+    120 30
+    Выходные данные:
+    На выход дается максимальная сумма цен предметов, которые поместятся в рюкзак
+    180.0
+    '''
+    sorted_m = sorted(m, key=lambda x: x[0]/x[1], reverse=True)
+    res = 0
+    for i in sorted_m:
+        if v - i[1] < 0:
+            res += i[0] / i[1] * v
+            return res
+        res += i[0]
+        v -= i[1]
+    return res
+
+def number_of_different_syllables(k: int) -> Tuple[int, List[int]]:
+    '''По данному числу найдите максимальное число k, для которого
+    n можно представить как сумму k различных натуральных слагаемых.
+    Пример:
+    Входные данные:
+    6
+    Выходные данные:
+    Число слагаемых и сами слагаемые
+    6
+    1 2 3
+    '''
+    res = []
+    for i in range(1, k+1):
+        if k - i < i + 1:
+            if k - i == 0:
+                res.append(i)
+                break
+            continue
+        k -= i
+        res.append(i)
+    return len(res), res
 def test():
     #Контейнеры с тестовыми данными
     test_list_0_10 = list(range(11))
+
     print('Числа Фибоначчи для чисел от 0 до 10 (для каждого числа считается отдельно):')
 
     print('Число Фибоначчи с сохранением промежуточных значений в массив:')
@@ -104,6 +176,21 @@ def test():
     print(f'НОД 14159572 и 63967072 равен {GCD_Euclid(14159572, 63967072)}')
     print(f'НОД 18 и 35 равен {GCD_Euclid(18, 35)}')
     print(f'НОД 1465432155 и 5689846525 равен {GCD_Euclid(1465432155, 5689846525)}')
+    print('\n')
+
+    print('Задача: покрыть отрезки точками')
+    print(f'При входных данных [(4,7), (1,3), (2,5), (5,6)] ответ: {point_cover([(4,7), (1,3), (2,5), (5,6)])}, \n'
+          f'тоесть минимум две точки, точка 3 и точка 6 (не единственно верный набор точек)')
+    print('\n')
+
+    print('Задача на непрерывный рюкзак')
+    print(f'При входных данных объем рюкзака = 50, предметы = [(60, 20), (100, 50), (120, 30)] ответ: '
+          f'{continuous_knapsack_problem(50, [(60, 20), (100, 50), (120, 30)])}')
+    print('\n')
+
+    print('Задача на подсчет максимального количества различных слагаемых числа k')
+    print(f'При входных данных k=6 ответ: {number_of_different_syllables(6)}')
+    print('\n')
 
 if __name__ == "__main__":
     test()
