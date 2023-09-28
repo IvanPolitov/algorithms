@@ -1,4 +1,5 @@
 from typing import List, Tuple
+from collections import Counter
 def fibonacci_with_list(n: int) -> int:
     '''Функция нахождения числа Фибоначчи
     c сохранением всех значеий до n в массив'''
