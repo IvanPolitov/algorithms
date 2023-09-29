@@ -194,14 +194,116 @@ class DoubleLinkedList:
                 i = i.next_node
             print()
 
+class Stack:
+    #на односвязном списке
+    def __init__(self, sup_min=False, sup_max=False):
+        self.first = None
+        self.min = None
+        self.max = None
+        self.sup_min = sup_min
+        self.sup_max = sup_max
 
-my_dll = DoubleLinkedList()
+    class Node:
+        def __init__(self, value, next_node=None):
+            self.value = value
+            self.next_node = next_node
+
+    def is_empty(self):
+        if self.first:
+            return False
+        else:
+            return True
+
+    def push(self, val):
+        if self.is_empty():
+            self.first = self.Node(val)
+
+            if self.sup_min:
+                self.min = self.Node(val)
+            if self.sup_max:
+                self.max = self.Node(val)
+            return
+
+        new_node = self.Node(val, next_node=self.first)
+        self.first = new_node
+
+        if self.sup_min:
+            if val < self.min.value:
+                new_node = self.Node(val, next_node=self.min)
+                self.min = new_node
+            else:
+                new_node = self.Node(self.min.value, next_node=self.min)
+                self.min = new_node
+        if self.sup_max:
+            if val > self.max.value:
+                new_node = self.Node(val, next_node=self.max)
+                self.max = new_node
+            else:
+                new_node = self.Node(self.max.value, next_node=self.max)
+                self.max = new_node
+
+    def pop(self):
+        if self.is_empty():
+            return
+        temp = self.first
+        self.first = self.first.next_node
+        if self.sup_min:
+            temp_min = self.min
+            self.min = self.min.next_node
+            del temp_min
+        if self.sup_max:
+            temp_max = self.max
+            self.max = self.max.next_node
+            del temp_max
+        return temp.value
+
+    def top(self):
+        if self.is_empty():
+            return
+        return self.first.value
+
+    def get_min(self):
+        if self.is_empty():
+            return
+        return self.min.value
+
+    def get_max(self):
+        if self.is_empty():
+            return
+        return self.max.value
+
+    def len(self):
+        if self.is_empty():
+            return 0
+        else:
+            i = self.first
+            l = 0
+            while i:
+                l += 1
+                i = i.next_node
+            return l
+
+    def print(self):
+        if self.is_empty():
+            print(None)
+        else:
+            i = self.first
+            while i:
+                print(i.value, end=' ')
+                i = i.next_node
+            print()
+
+my_stack = Stack(sup_max=True, sup_min=True)
+print(my_stack.len())
 for i in range(10):
-    my_dll.push_back(i)
-my_dll.print()
-my_dll.remove_first()
-my_dll.print()
-my_dll.remove_last()
-my_dll.print()
-my_dll.remove_val(3)
-my_dll.print()
+    my_stack.push(i)
+my_stack.push(-1)
+my_stack.push(28)
+my_stack.push(3)
+my_stack.pop()
+my_stack.pop()
+my_stack.pop()
+my_stack.pop()
+my_stack.print()
+print(my_stack.len())
+
