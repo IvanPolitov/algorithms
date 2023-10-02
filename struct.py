@@ -293,17 +293,66 @@ class Stack:
                 i = i.next_node
             print()
 
-my_stack = Stack(sup_max=True, sup_min=True)
-print(my_stack.len())
-for i in range(10):
-    my_stack.push(i)
-my_stack.push(-1)
-my_stack.push(28)
-my_stack.push(3)
-my_stack.pop()
-my_stack.pop()
-my_stack.pop()
-my_stack.pop()
+class Queue:
+    #на односвязном списке
+    def __init__(self):
+        self.front = None
+        self.back = None
+
+    class Node:
+        def __init__(self, value, next_node=None):
+            self.value = value
+            self.next_node = next_node
+
+    def is_empty(self):
+        if self.front:
+            return False
+        else:
+            return True
+
+    def enqueue(self, val):
+        if self.is_empty():
+            self.front = self.Node(val)
+            self.back = self.front
+            return
+        new_node = self.Node(val)
+        self.back.next_node = new_node
+        self.back = new_node
+
+    def dequeue(self):
+        if self.is_empty():
+            return
+        temp = self.front
+        self.front = self.front.next_node
+        return temp.value
+
+    def print(self):
+        if self.is_empty():
+            print(None)
+        else:
+            i = self.front
+            while i:
+                print(i.value, end=' ')
+                i = i.next_node
+            print()
+
+
+my_stack = Queue()
 my_stack.print()
-print(my_stack.len())
+for i in range(10):
+    my_stack.enqueue(i)
+my_stack.print()
+
+my_stack.enqueue(-1)
+my_stack.enqueue(28)
+my_stack.enqueue(3)
+my_stack.print()
+my_stack.dequeue()
+my_stack.print()
+my_stack.dequeue()
+my_stack.dequeue()
+my_stack.print()
+my_stack.dequeue()
+
+my_stack.print()
 
