@@ -326,6 +326,17 @@ class Queue:
         self.front = self.front.next_node
         return temp.value
 
+    def len(self):
+        if self.is_empty():
+            return 0
+        else:
+            i = self.front
+            l = 0
+            while i:
+                l += 1
+                i = i.next_node
+            return l
+
     def print(self):
         if self.is_empty():
             print(None)
@@ -353,6 +364,6 @@ my_stack.dequeue()
 my_stack.dequeue()
 my_stack.print()
 my_stack.dequeue()
-
+print(my_stack.len())
 my_stack.print()
 
