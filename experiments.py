@@ -4,17 +4,15 @@ from collections import Counter
 import time
 from functools import wraps
 import array
+
+
 class Heap:
-    '''
-    макси-куча
-    мини-куча аналогично
-    '''
-    coll = []
-    def __init__(self, coll):
-        self.coll = coll
-        self.size = len(coll)
-        self.max_size = self.size * 2
-        self.coll.extend(list(0 for _ in range(self.size)))
+    #мини
+    def __init__(self):
+        self.heaplist = [0, 0, 0]
+        self.heapsize = -1
+        self.maxsize = 3
+
     def _parent(self, i):
         return (i-1) // 2
 
@@ -24,58 +22,69 @@ class Heap:
     def _right_child(self,i):
         return 2 * i + 2
 
-    def _sift_up(self, i):
-        while i > 0 and self.coll[self._parent(i)] > self.coll[i]:
-            self.coll[self._parent(i)], self.coll[i] = self.coll[i], self.coll[self._parent(i)]
+    def _getmin(self):
+        return self.heaplist[0]
+
+    def build_heap(self, arr):
+        self.heaplist = arr
+        self.heapsize = len(arr) - 1
+        self.maxsize = self.heapsize
+        for i in range(self.heapsize // 2, -1, -1):
+            self.siftdown(i)
+
+    def siftup(self, i):
+        while i > 0 and self.heaplist[self._parent(i)] > self.heaplist[i]:
+            self.heaplist[self._parent(i)], self.heaplist[i] = self.heaplist[i], self.heaplist[self._parent(i)]
+            print(self._parent(i), i)
             i = self._parent(i)
 
-    def _sift_down(self, i):
-        max_index = i
-        l = self._left_child(i)
-        if l <= self.size and self.coll[l] < self.coll[max_index]:
-            max_index = l
-        r = self._left_child(i)
-        if r <= self.size and self.coll[r] < self.coll[max_index]:
-            max_index = r
-        if i != max_index:
-            self.coll[i], self.coll[max_index] = self.coll[max_index], self.coll[i]
-            self._sift_down(max_index)
+    def siftdown(self, i):
+        l, r = self._left_child(i), self._right_child(i)
+        min_i = i
+        if l <= self.heapsize and self.heaplist[l] < self.heaplist[min_i]:
+            min_i = l
+        if r <= self.heapsize and self.heaplist[r] < self.heaplist[min_i]:
+            min_i = r
+        if i != min_i:
+            self.heaplist[min_i], self.heaplist[i] = self.heaplist[i], self.heaplist[min_i]
+            self.siftdown(min_i)
 
     def insert(self, p):
-        if self.size == self.max_size:
-            self.max_size *= 2
-            self.coll.extend(list(0 for _ in range(self.size)))
-        self.size += 1
-        self.coll[self.size] = p
-        self._sift_up(self.size)
+        if self.heapsize + 1 == self.maxsize:
+            self.heaplist.extend(list(0 for _ in range(self.maxsize)))
+            self.maxsize *= 2
+        self.heapsize += 1
+        self.heaplist[self.heapsize] = p
+        self.siftup(self.heapsize)
 
-    def extract_max(self):
-        res = self.coll[0]
-        self.coll[0] = self.coll[self.size]
-        self.size -= 1
-        self._sift_down(0)
+    def extract_min(self):
+        res = self._getmin()
+        self.heaplist[0] = self.heaplist[self.heapsize]
+        self.heapsize -= 1
+        self.siftdown(0)
         return res
 
     def remove(self, i):
-        self.coll[i] = self.get_max() + 1
-        self._sift_up(i)
-        self.extract_max()
-
-    def get_max(self):
-        return self.coll[0]
+        self.heaplist[i] = self._getmin() + 1
+        self.siftup(i)
+        self.extract_min()
 
     def change_priority(self, i, p):
-        old_p = self.coll[i]
-        self.coll[i] = p
-        if p > old_p: self._sift_up(i)
-        else: self._sift_down(i)
+        oldp = self.heaplist[i]
+        self.heaplist[i] = p
+        if p > oldp: self.siftup(i)
+        else: self.siftdown(i)
 
     def print(self):
-        print(self.coll[:self.size])
+        print(self.heaplist[:self.heapsize + 1])
 
 if __name__ == "__main__":
-    my_heap = Heap([1, 2, 3, 4, 5])
-    my_heap.print()
-    my_heap.insert(8)
-    my_heap.print()
+    my_heap = Heap()
+    l = [5, 4, 3, 2, 1]
 
+    #for i in l:
+    #    my_heap.insert(i)
+    #my_heap.print()
+
+    my_heap.build_heap(l)
+    my_heap.print()
