@@ -1,11 +1,12 @@
-class SinglyLinkedList:
+class DoubleLinkedList:
     _head = None
     _tail = None
 
     class Node:
-        def __init__(self, value, next=None):
+        def __init__(self, value, next=None, prev=None):
             self.value = value
             self.next = next
+            self.prev = prev
 
         def __str__(self):
             return str(self.value)
@@ -31,9 +32,9 @@ class SinglyLinkedList:
             _node = self._head
             output = ""
             while _node is not None:
-                output += '(' + str(_node) + ") -> "
+                output += '(' + str(_node) + ") <-> "
                 _node = _node.next
-        return output[:-4]
+        return output[:-5]
 
     def is_empty(self):
         return self._head is None
@@ -45,6 +46,7 @@ class SinglyLinkedList:
             self._tail = node
         else:
             self._tail.next = node
+            node.prev = self._tail
             self._tail = node
 
     def push_head(self, value):
@@ -53,47 +55,48 @@ class SinglyLinkedList:
             self._head = node
             self._tail = node
         else:
+            self._head.prev = node
             node.next = self._head
             self._head = node
 
     def pop_tail(self):
         if self.is_empty():
             return None
-        elif self._head is self._tail:
-            _node = self._head
-            value = _node.value
+        if self._head is self._tail:
+            node = self._head
+            value = node.value
             self._head = self._tail = None
-            del _node
+            del node
             return value
         else:
-            _node = self._head
-            value = self._tail.value
-            while _node.next is not self._tail:
-                _node = _node.next
-            del _node.next
-            self._tail = _node
-            _node.next = None
+            node = self._tail
+            value = node.value
+            self._tail = self._tail.prev
+            self._tail.next = None
+            del node
             return value
 
     def pop_head(self):
         if self.is_empty():
             return None
-        elif self._head is self._tail:
-            _node = self._head
-            value = _node.value
+        if self._head is self._tail:
+            node = self._head
+            value = node.value
             self._head = self._tail = None
-            del _node
+            del node
             return value
         else:
-            _node = self._head
-            value = _node.value
-            self._head = _node.next
-            del _node
+            node = self._head
+            value = node.value
+            self._head = self._head.next
+            self._head.prev = None
+            del node
             return value
 
 
 if __name__ == "__main__":
-    q = SinglyLinkedList()
+    q = DoubleLinkedList()
+    print(q)
     q.push_tail(1)
     q.push_tail(2)
     q.push_tail(3)
@@ -101,8 +104,7 @@ if __name__ == "__main__":
     print(q)
     print(q.head)
     print(q.tail)
+    print(q.pop_tail())
+    print(q)
     print(q.pop_head())
-    print(q.pop_tail())
-    print(q.pop_tail())
-    print(q.pop_tail())
     print(q)
