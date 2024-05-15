@@ -1,9 +1,8 @@
-from sys import stdin
+# Очередь из двух стеков
 
-
-class StackMax:
+# Стек на односвязном списке
+class Stack:
     _head = None
-    _max = None
 
     class Node:
         def __init__(self, value, next=None):
@@ -35,20 +34,11 @@ class StackMax:
 
     def push(self, value):
         node = self.Node(value)
-        node_max = self.Node(value)
         if self.is_empty():
             self._head = node
-            self._max = node
         else:
             node.next = self._head
             self._head = node
-            if self._max.value < node_max.value:
-                node_max.next = self._max
-                self._max = node_max
-            else:
-                node_max = self.Node(self._max.value)
-                node_max.next = self._max
-                self._max = node_max
 
     def pop(self):
         if self.is_empty():
@@ -58,22 +48,10 @@ class StackMax:
             value = node.value
             self._head = node.next
             del node
-
-            node_max = self._max
-            self._max = node_max.next
-            del node_max
-
             return value
 
     def top(self):
-        if self.is_empty():
-            return None
         return self._head.value
-
-    def max(self):
-        if self.is_empty():
-            return None
-        return self._max.value
 
     def __len__(self):
         if self.is_empty():
@@ -86,26 +64,60 @@ class StackMax:
         return length
 
 
-def main(n, commands):
-    q = StackMax()
-    output = []
-    commands_dict = {
-        'push': q.push,
-        'pop': q.pop,
-        'max': q.max,
-    }
-    for command in commands:
-        c = command.split()
-        if c[0] == 'push':
-            commands_dict[c[0]](int(c[1]))
-        elif c[0] == 'pop':
-            commands_dict[c[0]]()
-        else:
-            output.append(commands_dict[c[0]]())
-    return output
+class QueueTwoStacks:
+    _input = None
+    _output = None
+
+    class Node:
+        def __init__(self, value, next=None):
+            self.value = value
+            self.next = next
+
+        def __str__(self):
+            return str(self.value)
+
+    def __init__(self):
+        self._input = Stack()
+        self._output = Stack()
+
+    def __str__(self):
+        return str(self._input) + r'\/' + str(self._output)
+
+    def is_empty(self):
+        return (self._input is None) and (self._output is None)
+
+    def enqueue(self, value):
+        _node = self.Node(value)
+        self._input.push(_node)
+
+    def dequeue(self):
+        if self._output.is_empty():
+            while not self._input.is_empty():
+                self._output.push(self._input.pop())
+        return self._output.pop()
 
 
 if __name__ == '__main__':
-    n = int(input())
-    commands = [x.strip() for x in stdin.readlines()]
-    print(*main(n, commands), sep='\n')
+    q = QueueTwoStacks()
+    q.enqueue(1)
+    q.enqueue(2)
+    q.enqueue(3)
+    q.enqueue(4)
+    q.enqueue(5)
+    print(q)
+    print(q.dequeue())
+    print(q)
+
+    q.enqueue(11)
+    q.enqueue(12)
+    print(q)
+    print(q.dequeue())
+    print(q)
+    print(q.dequeue())
+    print(q)
+    print(q.dequeue())
+    print(q)
+    print(q.dequeue())
+    print(q)
+    print(q.dequeue())
+    print(q)

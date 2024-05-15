@@ -1,6 +1,4 @@
-from sys import stdin
-
-
+# Стек на односвязном списке
 class StackMax:
     _head = None
     _max = None
@@ -86,26 +84,39 @@ class StackMax:
         return length
 
 
-def main(n, commands):
-    q = StackMax()
-    output = []
-    commands_dict = {
-        'push': q.push,
-        'pop': q.pop,
-        'max': q.max,
-    }
-    for command in commands:
-        c = command.split()
-        if c[0] == 'push':
-            commands_dict[c[0]](int(c[1]))
-        elif c[0] == 'pop':
-            commands_dict[c[0]]()
-        else:
-            output.append(commands_dict[c[0]]())
-    return output
-
-
 if __name__ == '__main__':
-    n = int(input())
-    commands = [x.strip() for x in stdin.readlines()]
-    print(*main(n, commands), sep='\n')
+    q = StackMax()
+    q.push(1)
+    print(q)
+    print(q.max())
+    q.push(2)
+    print(q)
+    print(q.max())
+    q.push(3)
+    print(q)
+    print(q.max())
+    q.push(2)
+    print(q)
+    print(q.max())
+    q.push(1)
+    print(q)
+    print(q.max())
+
+    q.pop()
+    print(q)
+    print(q.max())
+    q.pop()
+    print(q)
+    print(q.max())
+    q.pop()
+    print(q)
+    print(q.max())
+    q.pop()
+    print(q)
+    print(q.max())
+    q.pop()
+    print(q)
+    print(q.max())
+    q.pop()
+    print(q)
+    print(q.max())
