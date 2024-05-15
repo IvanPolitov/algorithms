@@ -2,7 +2,7 @@ import unittest
 from Stack import Stack
 
 
-def parentheses(s):
+def parentheses(s: str) -> int | str:
     par = {
         ')': '(',
         '}': '{',

@@ -1,4 +1,4 @@
-# Стек на связных списках
+# Стек на односвязном списке
 class Stack:
     _head = None
 
@@ -51,6 +51,16 @@ class Stack:
     def top(self):
         return self._head.value
 
+    def __len__(self):
+        if self.is_empty():
+            return 0
+        length = 0
+        node = self._head
+        while node is not None:
+            length += 1
+            node = node.next
+        return length
+
 
 if __name__ == '__main__':
     q = Stack()
@@ -60,10 +70,12 @@ if __name__ == '__main__':
     print(q)
     q.push(3)
     print(q.top())
-    print(q)
     print(q.pop())
-    print(q)
-    print(q.pop())
-    print(q)
-    print(q.pop())
-    print(q)
+    print(len(q))
+    # print(q)
+    #
+    # print(q)
+    # print(q.pop())
+    # print(q)
+    # print(q.pop())
+    # print(q)
