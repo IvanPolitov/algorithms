@@ -12,15 +12,15 @@ class Node:
 def tr(n, t):
     if n == 1:
         return 1
-    ml = [Node(x) for x in range(n)]
+    tree = [Node(x) for x in range(n)]
     for i in range(n):
         if t[i] != -1:
-            ml[t[i]].sons.append(ml[i])
-            ml[i].prev = ml[t[i]]
+            tree[t[i]].sons.append(tree[i])
+            tree[i].prev = tree[t[i]]
         else:
             flag = i
 
-    q = find_h(ml[flag])
+    q = find_h(tree[flag])
     return q
 
 

@@ -2,6 +2,7 @@
 class Queue:
     _head = None
     _tail = None
+    _length = 0
 
     class Node:
         def __init__(self, value=None):
@@ -27,11 +28,15 @@ class Queue:
                 _node = _node.next
         return output[:-4]
 
+    def __len__(self) -> int:
+        return self._length
+
     def is_empty(self):
         return self._head is None
 
     def enqueue(self, value):
         _node = self.Node(value)
+        self._length += 1
         if self.is_empty():
             self._head = _node
             self._tail = _node
@@ -42,11 +47,17 @@ class Queue:
     def dequeue(self):
         if self.is_empty():
             return None
+        self._length -= 1
         _node = self._head
         value = _node.value
         self._head = self._head.next
         del _node
         return value
+
+    def top(self):
+        if self.is_empty():
+            return None
+        return self._head.value
 
 
 if __name__ == "__main__":
@@ -54,7 +65,7 @@ if __name__ == "__main__":
     q.enqueue(1)
     q.enqueue(2)
     q.enqueue(3)
-    print(q)
+    print(len(q))
     q.dequeue()
     print(q)
     print(q.dequeue())
