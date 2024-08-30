@@ -56,14 +56,14 @@ def heap_sort_inplace(a: list) -> list:
         a[0], a[size] = a[size], a[0]
         size -= 1
         sift_down(0)
-        print(f'{size:<3}: ', a)
+
     sift_down(0)
 
 
 if __name__ == '__main__':
-    a = [x for x in range(10)]
-    b = [x for x in range(10)]
-    c = [x for x in range(10)]
+    a = [x for x in range(10, 20)]
+    b = [x for x in range(10, 20)]
+    c = [x for x in range(10, 20)]
 
     random.shuffle(a)
     random.shuffle(b)
@@ -73,7 +73,3 @@ if __name__ == '__main__':
     heap_sort_inplace(b)
     print(b)
     print(c)
-
-    q = [x for x in range(10)]
-    h = Heap(q)
-    print(h.heap)
